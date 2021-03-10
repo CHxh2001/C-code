@@ -11,4 +11,4 @@ void setmine(char board[ROWS][COLS], int row, int col);
 #include<stdlib.h>
 void paly(char board[ROWS][COLS], char show[ROWS][COLS], int rows,int cols);
 int Count(char board[ROWS][COLS],int x, int y);
-#define Setcount 80
+#define Setcount 10

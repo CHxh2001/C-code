@@ -1,5 +1,28 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include"Fmine.h"
+void open(char mine[ROWS][COLS], char show[ROWS][COLS], int x, int y)
+{
+	if (show[x][y] == '0')
+	{
+		int i = 0;
+		int j = 0;
+		for (i = x - 1; i <= x + 1; i++)
+		{
+			for (j = y - 1; j <= y + 1; j++)
+			{
+				if (i >= 1 && j >= 1 && i <= ROWS - 1 && j <= COLS - 1 && show[i][j] == '*')
+				{
+					int count = 0;
+					count = Count(mine, i, j);
+					show[i][j] = count + '0';
+					//open(mine, show, i, j);
+
+				}
+			}
+		}
+	}
+}
+
 void initboard(char board[ROWS][COLS], int rows, int cols,char set)
 {
 	int i = 0;
@@ -59,10 +82,10 @@ int Count(char board[ROWS][COLS],int x,int y)
 }
 void paly(char mine[ROWS][COLS], char show[ROWS][COLS], int row, int col)
 {
-	int win = 0;
+	//int win = 0;
 	int x = 0;
 	int y = 0;
-	while (win<row*col-Setcount)
+	while (1)
 	{
 		printf("请输入坐标[] []->");
 		scanf("%d %d", &x, &y);
@@ -79,18 +102,37 @@ void paly(char mine[ROWS][COLS], char show[ROWS][COLS], int row, int col)
 				int count = 0;
 				count = Count(mine, x, y);
 				show[x][y] = count+'0';
+				//展开
+				open(mine, show, x, y);
+				//win++;
 				display(show, ROWS, COLS);
-				win++;
 			}
 		}
 		else
 		{
 			printf("输入错误，请重新输入->");
 		}
+		//判断是否赢
+		int i = 0;
+		int unknow = 0;
+		for (i = 1; i <= row; i++)
+		{
+			int j = 1;
+			for (j = 1; j <= col; j++)
+			{
+				if (show[i][j] == '*')
+					unknow++;
+			}
 		}
-	if (win == row * col - Setcount)
-	{
-		printf("排雷成功\n");
-		display(mine, ROWS, COLS);
-	}
+		if (unknow == Setcount)
+		{
+			printf("排雷成功\n");
+			break;
+		}
+		}
+	//if (win == row * col - Setcount)
+	//{
+	//	printf("排雷成功\n");
+	//	display(mine, ROWS, COLS);
+	//}
 }
